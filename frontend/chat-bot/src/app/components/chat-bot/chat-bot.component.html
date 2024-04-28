@@ -6,9 +6,9 @@
         <div class="message-timestamp">10:30 AM</div>
       </div>
     </li>
-    <li class="message">
+    <li class="message" *ngIf="response()">
       <div class="message-content">
-        <div class="message-text">I'm doing great, thanks!</div>
+        <div class="message-text">{{ response() | json }}</div>
         <div class="message-timestamp">10:32 AM</div>
       </div>
     </li>
@@ -16,7 +16,14 @@
   </ul>
 
   <div class="chat-input">
-    <input type="text" placeholder="Type your message..." />
-    <button class="send-button">Send</button>
+    <input
+      #input
+      type="text"
+      placeholder="Type your message..."
+      (keydown.enter)="sendChatBotMessage(input.value)"
+    />
+    <button class="send-button" (click)="sendChatBotMessage(input.value)">
+      Send
+    </button>
   </div>
 </div>
