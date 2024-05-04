@@ -3,7 +3,6 @@
   height: 500px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  overflow-y: auto;
   position: absolute;
   right: 25px;
   bottom: 0;
@@ -15,6 +14,7 @@
   list-style-type: none;
   padding: 10px;
   margin: 0;
+  overflow-y: auto;
 }
 
 .message {
@@ -65,4 +65,9 @@
 
 .chat-input button:hover {
   background-color: #4285f4;
+}
+
+.user {
+  margin-left: auto;
+  background-color: #90b9fb;
 }
