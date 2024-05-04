@@ -8,6 +8,7 @@
   bottom: 0;
   display: flex;
   flex-direction: column;
+  background-color: #f3f5f9;
 }
 
 .chat-messages {
@@ -27,10 +28,14 @@
 }
 
 .message-text {
-  background-color: #f0f0f0;
-  border-radius: 4px;
-  padding: 8px;
-  margin-right: 10px;
+  display: inline-block;
+  border-radius: 12px;
+  max-width: 80%;
+  padding: 16px;
+  white-space: pre-wrap;
+  box-shadow: 0 2px 15px rgba(0, 0, 255, 0.03);
+  background-color: #fff;
+  overflow: hidden;
 }
 
 .message-timestamp {
@@ -70,4 +75,12 @@
 .user {
   margin-left: auto;
   background-color: #90b9fb;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+button:disabled:hover::after {
+  // content: "Ay kalam";
 }

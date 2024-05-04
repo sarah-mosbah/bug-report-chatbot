@@ -6,9 +6,9 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { ChatBotService } from 'src/app/services/chatbot.service';
-
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export interface Message {
   text: string;
   sender: 'bot' | 'user';
@@ -25,7 +25,12 @@ export class ChatBotComponent {
   @ViewChild('input') input!: ElementRef;
 
   currentTime = new Date();
-  messages = signal<Message[]>([]);
+  messages = signal<Message[]>([
+    {
+      text: "We're sorry that you encountered a bug! please provide us a detailed description so we can help",
+      sender: 'bot',
+    },
+  ]);
   chatBotService = inject(ChatBotService);
 
   sendChatBotMessage(message: string): void {
@@ -36,9 +41,24 @@ export class ChatBotComponent {
 
     this.chatBotService
       .sendMessage$(message)
-      .pipe(map((chatbotResponse) => chatbotResponse.fulfillmentText))
+
       .subscribe((responseMessage) => {
-        this.addNewMessageToConversation(responseMessage, 'bot');
+        for (const iterator of responseMessage.fulfillmentMessages) {
+          if (
+            iterator.payload &&
+            iterator.payload.fields &&
+            iterator.payload.fields.browsers
+          ) {
+            console.log(
+              'iterator.payload.browsers',
+              iterator.payload.fields.browsers
+            );
+          }
+        }
+        this.addNewMessageToConversation(
+          responseMessage.fulfillmentText,
+          'bot'
+        );
       });
   }
 
