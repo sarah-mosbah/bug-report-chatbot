@@ -48,6 +48,9 @@
       ],
       "@spartan-ng/ui-tooltip-helm": [
         ".\\components/ui-tooltip-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-button-helm": [
+        ".\\components/ui-button-helm/src/index.ts"
       ]
     }
   },

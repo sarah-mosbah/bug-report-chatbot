@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { HlmSkeletonComponent } from '@spartan-ng/ui-skeleton-helm';
 import { ChatBotService } from 'src/app/services/chatbot.service';
-
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 export interface Message {
   text: string;
   sender: 'bot' | 'user';
@@ -18,12 +18,13 @@ export interface Message {
   templateUrl: './chat-bot.component.html',
   styleUrls: ['./chat-bot.component.scss'],
   standalone: true,
-  imports: [CommonModule, HlmSkeletonComponent],
+  imports: [CommonModule, HlmSkeletonComponent, HlmButtonDirective],
   providers: [ChatBotService],
 })
 export class ChatBotComponent {
   @ViewChild('input') input!: ElementRef;
 
+  browsers: string[] = [];
   currentTime = new Date();
   messages = signal<Message[]>([
     {
@@ -32,6 +33,14 @@ export class ChatBotComponent {
     },
   ]);
   chatBotService = inject(ChatBotService);
+  loading: boolean = true;
+  browserType: string | undefined;
+
+  constructor() {
+    setTimeout(() => {
+      this.loading = false;
+    }, 3000);
+  }
 
   sendChatBotMessage(message: string): void {
     this.currentTime = new Date();
@@ -39,29 +48,27 @@ export class ChatBotComponent {
     this.addNewMessageToConversation(message, 'user');
     this.input.nativeElement.value = '';
 
-    this.chatBotService
-      .sendMessage$(message)
-
-      .subscribe((responseMessage) => {
-        for (const iterator of responseMessage.fulfillmentMessages) {
-          if (
-            iterator.payload &&
-            iterator.payload.fields &&
-            iterator.payload.fields.browsers
-          ) {
-            console.log(
-              'iterator.payload.browsers',
-              iterator.payload.fields.browsers
-            );
-          }
+    this.chatBotService.sendMessage$(message).subscribe((responseMessage) => {
+      for (const iterator of responseMessage.fulfillmentMessages) {
+        if (
+          iterator.payload &&
+          iterator.payload.fields &&
+          iterator.payload.fields.browsers &&
+          !this.browsers.length
+        ) {
+          this.browsers = iterator.payload.fields.browsers.listValue.values.map(
+            (value: { stringValue: string; kind: string }) => value.stringValue
+          );
         }
-        this.addNewMessageToConversation(
-          responseMessage.fulfillmentText,
-          'bot'
-        );
-      });
+      }
+      this.addNewMessageToConversation(responseMessage.fulfillmentText, 'bot');
+    });
   }
-
+  onClickBrowserType(browser: string) {
+    this.browserType = browser;
+    this.browsers = [];
+    this.sendChatBotMessage(browser);
+  }
   private addNewMessageToConversation(
     message: string,
     sender: 'user' | 'bot'
