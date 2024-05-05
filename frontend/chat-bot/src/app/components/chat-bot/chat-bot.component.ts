@@ -6,9 +6,9 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { map, tap } from 'rxjs';
+import { HlmSkeletonComponent } from '@spartan-ng/ui-skeleton-helm';
 import { ChatBotService } from 'src/app/services/chatbot.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 export interface Message {
   text: string;
   sender: 'bot' | 'user';
@@ -18,7 +18,7 @@ export interface Message {
   templateUrl: './chat-bot.component.html',
   styleUrls: ['./chat-bot.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HlmSkeletonComponent],
   providers: [ChatBotService],
 })
 export class ChatBotComponent {

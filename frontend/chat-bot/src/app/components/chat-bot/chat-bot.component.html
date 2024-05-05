@@ -1,5 +1,13 @@
 <div class="chat-container">
   <ul class="chat-messages">
+    <div class="flex items-center p-2 m-2 w-fit space-x-4">
+      <hlm-skeleton class="w-12 h-12 rounded-full" />
+      <div class="space-y-2">
+        <hlm-skeleton class="h-4 w-[250px]" />
+        <hlm-skeleton class="h-4 w-[200px]" />
+      </div>
+    </div>
+
     <li class="message" *ngIf="messages()">
       <div class="message-content" *ngFor="let message of messages()">
         <div
