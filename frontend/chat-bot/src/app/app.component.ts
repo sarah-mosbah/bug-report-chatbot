@@ -1,15 +1,30 @@
 import { Component } from '@angular/core';
 import { ChatBotComponent } from './components/chat-bot/chat-bot.component';
-import { MatCardModule } from '@angular/material/card';
+import {
+  HlmCardContentDirective,
+  HlmCardDescriptionDirective,
+  HlmCardDirective,
+  HlmCardFooterDirective,
+  HlmCardHeaderDirective,
+  HlmCardTitleDirective,
+} from '@spartan-ng/ui-card-helm';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [ChatBotComponent, MatCardModule, CommonModule],
+  imports: [
+    ChatBotComponent,
+    CommonModule,
+    HlmCardContentDirective,
+    HlmCardDescriptionDirective,
+    HlmCardDirective,
+    HlmCardFooterDirective,
+    HlmCardHeaderDirective,
+    HlmCardTitleDirective,
+  ],
 })
 export class AppComponent {
   products = [
